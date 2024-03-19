@@ -1,0 +1,22 @@
+{
+  "name": "mws-repl",
+  "version": "1.0.0",
+  "description": "Testing of Multi Wiki Server",
+  "main": "twrepl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-support"
+  },
+  "scripts": {
+    "start": "node ./twrepl"
+  },
+  "keywords": [
+    "REPL",
+    "tiddlywiki",
+    "multiwikiserver"
+  ],
+  "author": "PotOfCoffee2Go",
+  "license": "MIT"
+}

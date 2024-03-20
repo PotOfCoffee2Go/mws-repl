@@ -1,22 +1,28 @@
 {
   "name": "mws-repl",
   "version": "1.0.0",
-  "description": "Testing of Multi Wiki Server",
+  "description": "Boots up a REPL of TiddlyWiki5 MWS including the Multi Wiki Server",
   "main": "twrepl.js",
   "scripts": {
+    "start": "node ./twrepl",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-support"
   },
-  "scripts": {
-    "start": "node ./twrepl"
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/PotOfCoffee2Go/mws-repl.git"
   },
+  "author": "PotOfCoffee2go",
+  "license": "MIT",
   "keywords": [
     "REPL",
     "tiddlywiki",
     "multiwikiserver"
   ],
-  "author": "PotOfCoffee2Go",
-  "license": "MIT"
+  "bugs": {
+    "url": "https://github.com/PotOfCoffee2Go/mws-repl/issues"
+  },
+  "homepage": "https://github.com/PotOfCoffee2Go/mws-repl#readme"
 }

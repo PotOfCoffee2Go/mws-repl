@@ -8,3 +8,8 @@
 
 # Ignore TW MultiWikiServer database
 /mws/store
+
+# Ignore tiddlers created when using the server
+/mws/tiddlers
+# Except the SQL engine config
+!/mws/tiddlers/configMultiWikiServerEngine.tid

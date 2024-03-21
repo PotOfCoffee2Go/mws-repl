@@ -17,7 +17,7 @@ npm start
 // TW output path
 //  is where 'edition/multiwikiserver' tiddlywiki.info lives
 const editionFolder = 'mws';
-// post and host for multi wiki server
+// Port and host for multi wiki server
 //  'host=0.0.0.0' will make available on local network
 const serverCommand = ['--listen','port=9200','host=127.0.0.1'];
 

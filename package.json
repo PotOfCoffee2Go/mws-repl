@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-support"
+    "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-poc2go"
   },
   "repository": {
     "type": "git",

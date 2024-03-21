@@ -22,7 +22,7 @@ In `package.json` file change the 'tiddlywiki' dependency
 change
 ```js
   "dependencies": {
-    "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-support"
+    "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-poc2go"
   },
 ```
 

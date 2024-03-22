@@ -34,6 +34,7 @@ const colour = {
 const prompt = colour.txt('$mws-repl> ',33,0,7,0);
 const display = { prompt: () => colour.log(`\n\n${prompt}`,10) }
 
+const tests = require('./src/tests').Tests(colour, submit, display);
 
 // -------------------
 // Who are we?
@@ -88,7 +89,7 @@ colour.log('-------------------\n\n', 75);
 // Place $tw in REPL context so can be referenced
 function resetContext() {
   runtime.context.$tw = $tw;
-  runtime.context.step = step;
+  runtime.context.test = test;
 }
 
 // REPL runtime
@@ -131,6 +132,7 @@ setTimeout(() => {
   submit.cmd(`step(1) // Start demo - first poll returns all (up to limit)`);
 }, 2000);
 
+/*
 function step(nbr) {
   if (nbr === 1) {
     colour.log(`\n----- poll #1 -----\n`,10);
@@ -177,4 +179,5 @@ function step(nbr) {
     display.prompt();
   }
 }
+*/
 

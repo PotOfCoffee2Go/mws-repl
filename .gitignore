@@ -13,3 +13,7 @@
 /mws/tiddlers
 # Except the SQL engine config
 !/mws/tiddlers/configMultiWikiServerEngine.tid
+
+# Ignore package-lock.json as creates issues when
+#  dependences are changed 
+/package-lock.json

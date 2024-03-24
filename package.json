@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "http-server": "^14.1.1",
     "tiddlywiki": "https://github.com/PotOfCoffee2go/TiddlyWiki5.git#multi-wiki-temp"
   },
   "repository": {

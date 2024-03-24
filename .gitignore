@@ -17,3 +17,6 @@
 # Ignore package-lock.json as creates issues when
 #  dependences are changed 
 /package-lock.json
+
+# Ignore logs
+/logs

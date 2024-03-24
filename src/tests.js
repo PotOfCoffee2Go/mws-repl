@@ -13,10 +13,27 @@ const show = {
 			'tests.show.bag(bag);  - lists all tiddlers in a bag',
 			].join('\n')
 		);
-	},
-	bag: (bag) => submit(`$tw.mws.store.getBagTiddlers('${bag}')\n`, prompt),
+	}
 }
 
+const getBagLastTiddlerId = {
+	intro: () => {
+		submit(`.clear\n`);
+	},
+	step: (nbr) => {
+		if (nbr === 1) {
+			submit(`var poll_1 = $tw.mws.store.getBagRecentTiddlers('bag-alpha')\n`,[
+				'\n----- Step #1 -----',
+				'Specify only the bag name param to get list of most recent tiddlers',
+				` up to the 'limit' - currently 20 tiddlers`,
+				].join('\n')
+			);
+			submit(`showObj(poll_1)\n`);
+
+			submit(`showObj($tw.mws.store.getBagLastTiddlerId('bag-alpha'))\n`);
+		}
+	}
+}
 
 const addTiddler = {
 	intro: () => {
@@ -105,4 +122,5 @@ module.exports = {
 	Tests: Tests,
 	addTiddler: addTiddler,
 	show: show,
+	getBagLastTiddlerId: getBagLastTiddlerId,
 }

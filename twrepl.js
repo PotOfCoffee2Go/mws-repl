@@ -20,6 +20,8 @@ const editionFolder = 'mws';
 // Port and host for multi wiki server
 //  'host=0.0.0.0' will make available on local network
 const serverCommand = ['--listen','port=9200','host=127.0.0.1'];
+// Run ./bin/test.sh script - may need backslashes in windows?
+const runTestCommand = 'cd ./node_modules/tiddlywiki && ./bin/test.sh';
 
 // -------------------
 // REPL interface
@@ -50,8 +52,24 @@ function showObj(obj) {
 	console.dir(obj, {depth:5});
 }
 
-// Test suite
+// Help and Test suite
+const help = require('./src/help').Help(colour, submit, prompt);
 const tests = require('./src/tests').Tests(colour, submit, prompt);
+
+// -------------------
+// Run TiddlyWiki tests
+function runTests() {
+	const { spawn } = require('child_process');
+	const child = spawn(runTestCommand, {
+		stdio: 'inherit',
+		shell: true
+	});
+	child.on('exit', function (code, signal) {
+		console.log(`./bin/test.sh exited with code ${code}\n`);
+		colour.log(`Web page at 'http://localhost:8080/node_modules/tiddlywiki/editions/test/output/test.html'\n`, 11);
+		submit('\n');
+	});
+}
 
 // -------------------
 // Remove database.sqlite
@@ -60,7 +78,7 @@ async function removeStoreDb() {
   try {
 	const path = './mws/store/database.sqlite';
     await unlink(path);
-    colour.log(`Successfully deleted ${path}\n\n`,130,0,110);
+    colour.log(`Successfully deleted ${path}\n\n`,130);
   } catch (error) {
 	  if (error.errno !== -2) {
 		console.dir(error);
@@ -72,7 +90,7 @@ async function removeStoreDb() {
 // Who are we?
 const pkg = require('./package.json');
 function intro() {
-	colour.log( `${pkg.name}: `,75); colour.log(`v${pkg.version}\n\n`,130,0,110);
+	colour.log( `${pkg.name}: `,75); colour.log(`v${pkg.version}\n\n`,130);
 }
 
 // -------------------
@@ -86,16 +104,11 @@ function checkForErrors(err) {
 	}
 }
 
-// Commander logs to console
-const log = {
-	write: (text) => console.log(text.toString())
-}
-
 // Create $tw.Commander to do... commands
 const cmdr = {
 	execute: (cmds) => {
-			colour.log('$tw.Commander: ',75); colour.log(JSON.stringify(cmds) + '\n',130,0,110);
-			new $tw.Commander(cmds, checkForErrors, $tw.wiki).execute();
+		colour.log('$tw.Commander: ',75); colour.log(JSON.stringify(cmds) + '\n',130);
+		new $tw.Commander(cmds, checkForErrors, $tw.wiki).execute();
 	}
 }
 
@@ -106,6 +119,8 @@ function resetContext() {
 	runtime.context.$tw = $tw;
 	runtime.context.showObj = showObj;
 	runtime.context.tests = tests;
+	runtime.context.runTests = runTests;
+	runtime.context.help = help;
 }
 
 // REPL runtime
@@ -128,19 +143,33 @@ function startRepl() {
 // Startup
 const $tw = require('tiddlywiki').TiddlyWiki();
 function startup () {
-	// -------------------
-	// Initialize
 	// Boot tiddlywiki module
-	colour.log('Boot TiddlyWiki (multi-wiki-support)\n', 75);
-	colour.log(`${pkg.dependencies.tiddlywiki}\n`,130,0,110);
+	colour.log('Boot TiddlyWiki\n', 75);
+	colour.log(`${pkg.dependencies.tiddlywiki}\n`,130);
 	colour.log('-------------------\n',75);
-
 	$tw.preloadTiddlers = require('./preloadTiddlers.json');
 	$tw.boot.argv = [editionFolder];
 	$tw.boot.boot(() => {});
-
 	colour.log('-------------------\n\n', 75);
 
+	// Static server
+	colour.log('Start static server\n', 75);
+	colour.log('-------------------\n',75);
+	const fs = require('node:fs');
+	const { spawn } = require('node:child_process');
+	$tw.utils.createDirectory('./logs');
+	const out = fs.openSync('./logs//http-server-out.log', 'w');
+	const err = fs.openSync('./logs/http-server-err.log', 'w');
+	const staticServer = spawn('./node_modules/http-server/bin/http-server -p 8888 -c-1', {
+		stdio: [ 'ignore', out, err ],
+		shell: true
+	});
+	staticServer.on('close', (code) => {
+	  console.log(`Static server exited with code ${code}`);
+	});
+	colour.log(`Static server at http://localhost:8888\n`,130);
+	colour.log(`If issues see logs at './logs/http-server-out.log' for details\n`,130);
+	colour.log('-------------------\n\n', 75);
 
 	// Fire up the Multi Wiki Server
 	colour.log('Startup Multi Wiki Server\n', 75);
@@ -154,8 +183,13 @@ function startup () {
 		colour.log('-------------------\n\n',75);
 		startRepl();
 		submit('$tw.version\n');
-		submit(`$tw.mws.store.listBags().map(bag => bag.bag_name)\n`, '\n');
-		submit(`tests.addTiddler.intro()`, `\n\nStart test - addTiddler`);
+		submit(`$tw.mws.store.listRecipes().map(\n`);
+		submit(`  recipe => {\n`);
+		submit(`    return {recipe_name:recipe.recipe_name,bag_names:recipe.bag_names}\n`);
+		submit(`  }\n`);
+		submit(`)\n`);
+		submit(`$tw.mws.store.listBags().map(bag => bag.bag_name)\n`);
+		submit(`help.intro()`);
 	}, 2000);
 }
 
